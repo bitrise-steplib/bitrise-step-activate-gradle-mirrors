@@ -10,9 +10,6 @@ description: |
   mirror deployment. In every other case it logs an info message and exits
   successfully.
 
-  All known mirrors are enabled by default; set an individual input to `"false"`
-  to opt out of routing that repository through the Bitrise mirror.
-
 website: https://github.com/bitrise-steplib/bitrise-step-activate-gradle-mirrors
 source_code_url: https://github.com/bitrise-steplib/bitrise-step-activate-gradle-mirrors
 support_url: https://github.com/bitrise-steplib/bitrise-step-activate-gradle-mirrors
@@ -31,30 +28,6 @@ toolkit:
     package_name: github.com/bitrise-steplib/bitrise-step-activate-gradle-mirrors
 
 inputs:
-- mavencentral: "true"
-  opts:
-    title: Enable mavencentral mirror
-    summary: Route Maven Central requests through the Bitrise mirror.
-    is_required: true
-    value_options:
-    - "true"
-    - "false"
-- mavencentral_apache: "true"
-  opts:
-    title: Enable mavencentral-apache mirror
-    summary: Route `repo.maven.apache.org` requests through the Bitrise mirror.
-    is_required: true
-    value_options:
-    - "true"
-    - "false"
-- google: "true"
-  opts:
-    title: Enable google mirror
-    summary: Route the Google Maven repository through the Bitrise mirror.
-    is_required: true
-    value_options:
-    - "true"
-    - "false"
 - verbose: "false"
   opts:
     title: Verbose logging

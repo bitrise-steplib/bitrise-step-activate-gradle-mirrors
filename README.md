@@ -16,9 +16,6 @@ variable and only activates when run in a Bitrise datacenter that has a
 mirror deployment. In every other case it logs an info message and exits
 successfully.
 
-All known mirrors are enabled by default; set an individual input to `"false"`
-to opt out of routing that repository through the Bitrise mirror.
-
 </details>
 
 ## 🧩 Get started
@@ -34,9 +31,6 @@ You can also run this step directly with [Bitrise CLI](https://github.com/bitris
 
 | Key | Description | Flags | Default |
 | --- | --- | --- | --- |
-| `mavencentral` | Route Maven Central requests through the Bitrise mirror. | required | `true` |
-| `mavencentral_apache` | Route `repo.maven.apache.org` requests through the Bitrise mirror. | required | `true` |
-| `google` | Route the Google Maven repository through the Bitrise mirror. | required | `true` |
 | `verbose` | Enable logging additional information for troubleshooting | required | `false` |
 </details>
 

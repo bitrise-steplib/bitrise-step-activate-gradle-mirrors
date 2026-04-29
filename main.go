@@ -13,10 +13,7 @@ import (
 )
 
 type Input struct {
-	Mavencentral       bool `env:"mavencentral,required"`
-	MavencentralApache bool `env:"mavencentral_apache,required"`
-	Google             bool `env:"google,required"`
-	Verbose            bool `env:"verbose,required"`
+	Verbose bool `env:"verbose,required"`
 }
 
 func main() {
@@ -40,12 +37,9 @@ func run() error {
 	stepconf.Print(input)
 	logger.Println()
 
-	selected := selectedFlags(input)
-
 	activator := mirrorspkg.NewActivator(mirrorspkg.ActivatorParams{
-		SelectedFlags: selected,
-		DebugLogging:  input.Verbose,
-		Logger:        logger,
+		DebugLogging: input.Verbose,
+		Logger:       logger,
 	})
 
 	if err := activator.Activate(context.Background()); err != nil {
@@ -53,22 +47,4 @@ func run() error {
 	}
 
 	return nil
-}
-
-func selectedFlags(input Input) []string {
-	var selected []string
-
-	if input.Mavencentral {
-		selected = append(selected, "mavencentral")
-	}
-
-	if input.MavencentralApache {
-		selected = append(selected, "mavencentral-apache")
-	}
-
-	if input.Google {
-		selected = append(selected, "google")
-	}
-
-	return selected
 }
