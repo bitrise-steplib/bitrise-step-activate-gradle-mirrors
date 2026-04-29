@@ -1,0 +1,80 @@
+format_version: "11"
+default_step_lib_source: https://github.com/bitrise-io/bitrise-steplib.git
+
+workflows:
+  test_default_all_mirrors:
+    steps:
+    - path::./:
+        title: Execute step (defaults)
+        run_if: "true"
+        is_skippable: false
+        inputs:
+        - verbose: "true"
+    - script:
+        title: Verify init script written when proxy enabled in supported DC
+        inputs:
+        - content: |-
+            #!/bin/bash
+            set -ex
+
+            init_file=~/.gradle/init.d/bitrise-gradle-mirrors.init.gradle.kts
+
+            if [ "$BITRISE_MAVENCENTRAL_PROXY_ENABLED" != "true" ]; then
+              echo "Proxy disabled — skipping assertion"
+              exit 0
+            fi
+
+            case "$BITRISE_DEN_VM_DATACENTER" in
+              IAD*|ORD*|AMS*) ;;
+              *)
+                echo "Unsupported datacenter $BITRISE_DEN_VM_DATACENTER — skipping assertion"
+                exit 0
+                ;;
+            esac
+
+            if [ ! -f "$init_file" ]; then
+              echo "Expected $init_file to be written"
+              exit 1
+            fi
+
+            echo "$init_file content:"
+            cat "$init_file"
+
+  test_only_mavencentral:
+    steps:
+    - path::./:
+        title: Execute step (mavencentral only)
+        run_if: "true"
+        is_skippable: false
+        inputs:
+        - verbose: "true"
+        - mavencentral: "true"
+    - script:
+        title: Verify only the mavencentral mirror is in the init script
+        inputs:
+        - content: |-
+            #!/bin/bash
+            set -ex
+
+            init_file=~/.gradle/init.d/bitrise-gradle-mirrors.init.gradle.kts
+
+            if [ "$BITRISE_MAVENCENTRAL_PROXY_ENABLED" != "true" ]; then
+              exit 0
+            fi
+
+            case "$BITRISE_DEN_VM_DATACENTER" in
+              IAD*|ORD*|AMS*) ;;
+              *) exit 0 ;;
+            esac
+
+            if ! grep -q "/maven/central" "$init_file"; then
+              echo "Expected /maven/central in $init_file"
+              cat "$init_file"
+              exit 1
+            fi
+
+            if grep -q "/maven/google" "$init_file"; then
+              echo "Did not expect /maven/google in $init_file"
+              cat "$init_file"
+              exit 1
+            fi

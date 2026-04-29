@@ -1,0 +1,62 @@
+title: Activate Gradle Mirrors
+summary: Activates Bitrise repository mirrors for subsequent Gradle builds in the workflow
+description: |
+  This step installs a Gradle init script that redirects repository requests to
+  Bitrise-hosted mirrors for faster, more reliable dependency resolution in
+  subsequent Gradle invocations.
+
+  The step is gated by the `BITRISE_MAVENCENTRAL_PROXY_ENABLED` environment
+  variable and only activates when run in a Bitrise datacenter that has a
+  mirror deployment. In every other case it logs an info message and exits
+  successfully.
+
+  When no mirror flags are explicitly enabled, all known mirrors are activated
+  (`mavencentral`, `mavencentral-apache`, `google`).
+
+website: https://github.com/bitrise-steplib/bitrise-step-activate-gradle-mirrors
+source_code_url: https://github.com/bitrise-steplib/bitrise-step-activate-gradle-mirrors
+support_url: https://github.com/bitrise-steplib/bitrise-step-activate-gradle-mirrors
+
+type_tags:
+- utility
+
+run_if: .IsCI
+is_skippable: true
+
+toolkit:
+  bash:
+    entry_file: step.sh
+
+inputs:
+- mavencentral: ""
+  opts:
+    title: Enable mavencentral mirror
+    summary: When set to `true`, route Maven Central requests through the Bitrise mirror. Leave empty to use the default (all known mirrors enabled).
+    value_options:
+    - ""
+    - "true"
+    - "false"
+- mavencentral_apache: ""
+  opts:
+    title: Enable mavencentral-apache mirror
+    summary: When set to `true`, route `repo.maven.apache.org` requests through the Bitrise mirror. Leave empty to use the default (all known mirrors enabled).
+    value_options:
+    - ""
+    - "true"
+    - "false"
+- google: ""
+  opts:
+    title: Enable google mirror
+    summary: When set to `true`, route the Google Maven repository through the Bitrise mirror. Leave empty to use the default (all known mirrors enabled).
+    value_options:
+    - ""
+    - "true"
+    - "false"
+- verbose: "false"
+  opts:
+    title: Verbose logging
+    summary: Enable logging additional information for troubleshooting
+    is_required: true
+    value_options:
+    - "true"
+    - "false"
