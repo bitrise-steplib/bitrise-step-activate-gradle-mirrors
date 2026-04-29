@@ -10,13 +10,16 @@ description: |
   mirror deployment. In every other case it logs an info message and exits
   successfully.
 
-  When no mirror flags are explicitly enabled, all known mirrors are activated
-  (`mavencentral`, `mavencentral-apache`, `google`).
+  All known mirrors are enabled by default; set an individual input to `"false"`
+  to opt out of routing that repository through the Bitrise mirror.
 
 website: https://github.com/bitrise-steplib/bitrise-step-activate-gradle-mirrors
 source_code_url: https://github.com/bitrise-steplib/bitrise-step-activate-gradle-mirrors
 support_url: https://github.com/bitrise-steplib/bitrise-step-activate-gradle-mirrors
 
+project_type_tags:
+- android
+- kotlin-multiplatform
 type_tags:
 - utility
 
@@ -24,32 +27,32 @@ run_if: .IsCI
 is_skippable: true
 
 toolkit:
-  bash:
-    entry_file: step.sh
+  go:
+    package_name: github.com/bitrise-steplib/bitrise-step-activate-gradle-mirrors
 
 inputs:
-- mavencentral: ""
+- mavencentral: "true"
   opts:
     title: Enable mavencentral mirror
-    summary: When set to `true`, route Maven Central requests through the Bitrise mirror. Leave empty to use the default (all known mirrors enabled).
+    summary: Route Maven Central requests through the Bitrise mirror.
+    is_required: true
     value_options:
-    - ""
     - "true"
     - "false"
-- mavencentral_apache: ""
+- mavencentral_apache: "true"
   opts:
     title: Enable mavencentral-apache mirror
-    summary: When set to `true`, route `repo.maven.apache.org` requests through the Bitrise mirror. Leave empty to use the default (all known mirrors enabled).
+    summary: Route `repo.maven.apache.org` requests through the Bitrise mirror.
+    is_required: true
     value_options:
-    - ""
     - "true"
     - "false"
-- google: ""
+- google: "true"
   opts:
     title: Enable google mirror
-    summary: When set to `true`, route the Google Maven repository through the Bitrise mirror. Leave empty to use the default (all known mirrors enabled).
+    summary: Route the Google Maven repository through the Bitrise mirror.
+    is_required: true
     value_options:
-    - ""
     - "true"
     - "false"
 - verbose: "false"
