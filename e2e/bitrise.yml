@@ -49,6 +49,8 @@ workflows:
         inputs:
         - verbose: "true"
         - mavencentral: "true"
+        - mavencentral_apache: "false"
+        - google: "false"
     - script:
         title: Verify only the mavencentral mirror is in the init script
         inputs:
