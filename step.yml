@@ -16,7 +16,6 @@ support_url: https://github.com/bitrise-steplib/bitrise-step-activate-gradle-mir
 
 project_type_tags:
 - android
-- kotlin-multiplatform
 type_tags:
 - utility
 
