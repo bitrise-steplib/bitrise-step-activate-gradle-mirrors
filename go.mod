@@ -5,7 +5,7 @@ go 1.24.0
 toolchain go1.24.10
 
 require (
-	github.com/bitrise-io/bitrise-build-cache-cli/v2 v2.8.11
+	github.com/bitrise-io/bitrise-build-cache-cli/v2 v2.8.12
 	github.com/bitrise-io/go-steputils/v2 v2.0.0-alpha.50
 	github.com/bitrise-io/go-utils/v2 v2.0.0-alpha.34
 )
