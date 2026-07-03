@@ -1,13 +1,14 @@
-# github.com/bitrise-io/bitrise-build-cache-cli/v2 v2.8.16
+# github.com/bitrise-io/bitrise-build-cache-cli/v3 v3.0.1
 ## explicit; go 1.24.0
-github.com/bitrise-io/bitrise-build-cache-cli/v2/internal/config/common
-github.com/bitrise-io/bitrise-build-cache-cli/v2/internal/config/gradle/mirrors
-github.com/bitrise-io/bitrise-build-cache-cli/v2/internal/consts
-github.com/bitrise-io/bitrise-build-cache-cli/v2/internal/envexport
-github.com/bitrise-io/bitrise-build-cache-cli/v2/internal/exec
-github.com/bitrise-io/bitrise-build-cache-cli/v2/internal/stringmerge
-github.com/bitrise-io/bitrise-build-cache-cli/v2/internal/utils
-github.com/bitrise-io/bitrise-build-cache-cli/v2/pkg/gradle/mirrors
+github.com/bitrise-io/bitrise-build-cache-cli/v3/internal/auth/keychain
+github.com/bitrise-io/bitrise-build-cache-cli/v3/internal/config/common
+github.com/bitrise-io/bitrise-build-cache-cli/v3/internal/config/gradle/mirrors
+github.com/bitrise-io/bitrise-build-cache-cli/v3/internal/consts
+github.com/bitrise-io/bitrise-build-cache-cli/v3/internal/envexport
+github.com/bitrise-io/bitrise-build-cache-cli/v3/internal/exec
+github.com/bitrise-io/bitrise-build-cache-cli/v3/internal/stringmerge
+github.com/bitrise-io/bitrise-build-cache-cli/v3/internal/utils
+github.com/bitrise-io/bitrise-build-cache-cli/v3/pkg/gradle/mirrors
 # github.com/bitrise-io/go-steputils/v2 v2.0.0-alpha.50
 ## explicit; go 1.21
 github.com/bitrise-io/go-steputils/v2/stepconf
@@ -21,9 +22,24 @@ github.com/bitrise-io/go-utils/v2/log/colorstring
 github.com/bitrise-io/go-utils/v2/parseutil
 github.com/bitrise-io/go-utils/v2/pathutil
 github.com/bitrise-io/go-utils/v2/retryhttp
+# github.com/danieljoos/wincred v1.2.3
+## explicit; go 1.18
+github.com/danieljoos/wincred
+# github.com/godbus/dbus/v5 v5.2.2
+## explicit; go 1.20
+github.com/godbus/dbus/v5
 # github.com/hashicorp/go-cleanhttp v0.5.2
 ## explicit; go 1.13
 github.com/hashicorp/go-cleanhttp
 # github.com/hashicorp/go-retryablehttp v0.7.8
 ## explicit; go 1.23
 github.com/hashicorp/go-retryablehttp
+# github.com/zalando/go-keyring v0.2.8
+## explicit; go 1.18
+github.com/zalando/go-keyring
+github.com/zalando/go-keyring/internal/shellescape
+github.com/zalando/go-keyring/secret_service
+# golang.org/x/sys v0.41.0
+## explicit; go 1.24.0
+golang.org/x/sys/unix
+golang.org/x/sys/windows
