@@ -9,7 +9,7 @@ import (
 	"github.com/bitrise-io/go-utils/v2/env"
 	"github.com/bitrise-io/go-utils/v2/log"
 
-	mirrorspkg "github.com/bitrise-io/bitrise-build-cache-cli/v2/pkg/gradle/mirrors"
+	mirrorspkg "github.com/bitrise-io/bitrise-build-cache-cli/v3/pkg/gradle/mirrors"
 )
 
 type Input struct {
