@@ -1,9 +1,9 @@
 module github.com/bitrise-steplib/bitrise-step-activate-gradle-mirrors
 
-go 1.25.0
+go 1.25.8
 
 require (
-	github.com/bitrise-io/bitrise-build-cache-cli/v3 v3.2.3
+	github.com/bitrise-io/bitrise-build-cache-cli/v3 v3.3.0
 	github.com/bitrise-io/go-steputils/v2 v2.0.0-alpha.50
 	github.com/bitrise-io/go-utils/v2 v2.0.0-alpha.36
 )
