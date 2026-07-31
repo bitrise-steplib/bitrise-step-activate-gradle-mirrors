@@ -1,5 +1,5 @@
-# github.com/bitrise-io/bitrise-build-cache-cli/v3 v3.2.3
-## explicit; go 1.25.0
+# github.com/bitrise-io/bitrise-build-cache-cli/v3 v3.3.0
+## explicit; go 1.25.8
 github.com/bitrise-io/bitrise-build-cache-cli/v3/internal/auth/keychain
 github.com/bitrise-io/bitrise-build-cache-cli/v3/internal/config/common
 github.com/bitrise-io/bitrise-build-cache-cli/v3/internal/config/gradle/mirrors
