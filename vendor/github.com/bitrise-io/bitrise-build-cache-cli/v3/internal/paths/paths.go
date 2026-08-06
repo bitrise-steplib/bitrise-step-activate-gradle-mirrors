@@ -68,6 +68,10 @@ const (
 
 	enrichmentHealthFilename = "health.json"
 
+	authRefreshLockFilename = "auth-refresh.lock"
+
+	bazelCredHelperWarnFilename = "bazel-credhelper-warned" //nolint:gosec // marker filename, not a credential
+
 	// bitriseBinSubdir holds the stable CLI binary copy used by the daemon supervisor.
 	bitriseBinSubdir = "bin"
 
@@ -125,6 +129,14 @@ func (p Paths) StateDir() string {
 // StateFile returns the absolute path of a file under StateDir.
 func (p Paths) StateFile(name string) string {
 	return filepath.Join(p.StateDir(), name)
+}
+
+func (p Paths) AuthRefreshLockFile() string {
+	return p.StateFile(authRefreshLockFilename)
+}
+
+func (p Paths) BazelCredHelperWarnFile() string {
+	return p.StateFile(bazelCredHelperWarnFilename)
 }
 
 // LaunchAgentsDir is the absolute path of the per-user macOS LaunchAgents dir.
@@ -289,4 +301,20 @@ func (p Paths) XcodeManagedDerivedDataRoot() string {
 // workspace-sha, layered under BitriseCacheDir("xcode-ptd").
 func (p Paths) XcodeManagedProjectTempDir(workspaceSHA string) string {
 	return filepath.Join(p.BitriseCacheDir(xcodeManagedProjectTempDirTool), workspaceSHA)
+}
+
+// DirMaker is the subset of utils.OsProxy that EnsureDir needs.
+type DirMaker interface {
+	MkdirAll(path string, perm os.FileMode) error
+}
+
+// EnsureDir creates dir if it is missing. Activation uses it for the log dirs
+// the tool's first run would otherwise create lazily, so a freshly activated
+// setup doesn't report them as missing before that run.
+func EnsureDir(m DirMaker, dir string) error {
+	if err := m.MkdirAll(dir, 0o755); err != nil {
+		return fmt.Errorf("create %s: %w", dir, err)
+	}
+
+	return nil
 }
