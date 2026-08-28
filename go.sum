@@ -1,5 +1,5 @@
-github.com/bitrise-io/bitrise-build-cache-cli/v3 v3.6.3 h1:20N48aPouW7POrXImsIooSzqr71TtZY3nO4b/+2oHEo=
-github.com/bitrise-io/bitrise-build-cache-cli/v3 v3.6.3/go.mod h1:FrhmwJmhU713ql43nIQ/D0BsUdyH3SNqQqsR3tPSfIk=
+github.com/bitrise-io/bitrise-build-cache-cli/v3 v3.6.4 h1:xo+iA/KqoTpPeCGsedB1JqlAEHb+HeNGfTUDWk4bodI=
+github.com/bitrise-io/bitrise-build-cache-cli/v3 v3.6.4/go.mod h1:FrhmwJmhU713ql43nIQ/D0BsUdyH3SNqQqsR3tPSfIk=
 github.com/bitrise-io/go-steputils/v2 v2.0.0-alpha.50 h1:cwg+2mXp7kAL6t4Vg6Nx7IAAQKClyLglHcp+B92GOzw=
 github.com/bitrise-io/go-steputils/v2 v2.0.0-alpha.50/go.mod h1:hK2zMovlJg7+FLdJDQx2GV/2dB/WqErBGLKPPF42oOo=
 github.com/bitrise-io/go-utils/v2 v2.0.0-alpha.36 h1:zbvo84Wun4urzBt6+tkGpYSDvA5TwCfsNj4HEKvppnk=
