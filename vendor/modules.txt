@@ -1,5 +1,5 @@
-# github.com/bitrise-io/bitrise-build-cache-cli/v3 v3.9.1
-## explicit; go 1.25.8
+# github.com/bitrise-io/bitrise-build-cache-cli/v3 v3.9.2
+## explicit; go 1.26.0
 github.com/bitrise-io/bitrise-build-cache-cli/v3/internal/auth
 github.com/bitrise-io/bitrise-build-cache-cli/v3/internal/config/common
 github.com/bitrise-io/bitrise-build-cache-cli/v3/internal/config/gradle/mirrors
@@ -10,10 +10,10 @@ github.com/bitrise-io/bitrise-build-cache-cli/v3/internal/paths
 github.com/bitrise-io/bitrise-build-cache-cli/v3/internal/stringmerge
 github.com/bitrise-io/bitrise-build-cache-cli/v3/internal/utils
 github.com/bitrise-io/bitrise-build-cache-cli/v3/pkg/gradle/mirrors
-# github.com/bitrise-io/go-steputils/v2 v2.0.0-alpha.50
+# github.com/bitrise-io/go-steputils/v2 v2.0.0-alpha.52
 ## explicit; go 1.21
 github.com/bitrise-io/go-steputils/v2/stepconf
-# github.com/bitrise-io/go-utils/v2 v2.0.0-alpha.36
+# github.com/bitrise-io/go-utils/v2 v2.0.0-alpha.38
 ## explicit; go 1.21
 github.com/bitrise-io/go-utils/v2/env
 github.com/bitrise-io/go-utils/v2/filedownloader
