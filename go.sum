@@ -1,7 +1,7 @@
-github.com/bitrise-io/bitrise-build-cache-cli/v3 v3.17.3 h1:sUPHx1qB02Mzmg7Rey3FlOM6z1CNdPG74LC1nGdNvuQ=
-github.com/bitrise-io/bitrise-build-cache-cli/v3 v3.17.3/go.mod h1:gPHTq+0RUmQaY2/uWo/EwRx7DMp9+XEreL6n6VlfG6g=
-github.com/bitrise-io/go-steputils/v2 v2.0.0-alpha.54 h1:0dGR82r6ru+9Dyw6JSwjOyx7/n28cVm34XtMrIBlnkU=
-github.com/bitrise-io/go-steputils/v2 v2.0.0-alpha.54/go.mod h1:XrqiAQ3NY/T3gC50n7jCthpkYF8o9zDtwPDqy59pbKo=
+github.com/bitrise-io/bitrise-build-cache-cli/v3 v3.17.4 h1:FUF9mqc48+OEdRavBpIJOD/HrUzG7qWXdqLPcXjgmmo=
+github.com/bitrise-io/bitrise-build-cache-cli/v3 v3.17.4/go.mod h1:P4JmOu4CDj0YZG58q13L55RYU17OGWSP+LyPLouhupU=
+github.com/bitrise-io/go-steputils/v2 v2.0.0-alpha.55 h1:2uIzduj07CWbNp02y4EPDJF0zD1vJDZPTV4F2p9ikNU=
+github.com/bitrise-io/go-steputils/v2 v2.0.0-alpha.55/go.mod h1:XrqiAQ3NY/T3gC50n7jCthpkYF8o9zDtwPDqy59pbKo=
 github.com/bitrise-io/go-utils/v2 v2.0.0-alpha.39 h1:QbWclC8fOI9rho//WXZFXmcbho+FPoL8FegL+/JR27o=
 github.com/bitrise-io/go-utils/v2 v2.0.0-alpha.39/go.mod h1:5Z/vkUZ2BIY7IAVlMGns3ypRjd+J872YBSCJaLWVo/U=
 github.com/fatih/color v1.16.0 h1:zmkK9Ngbjj+K0yRhTVONQh1p/HknKYSlNT+vZCzyokM=
