@@ -27,6 +27,28 @@ const (
 	// XcelerateRootRelative is the per-user Xcelerate config root (~/.bitrise-xcelerate).
 	XcelerateRootRelative = ".bitrise-xcelerate"
 
+	// XcodeAppOverrideXCConfigFileName is the override xcconfig under XcelerateRoot
+	// written by `activate xcode` and consumed by `xcode link`.
+	XcodeAppOverrideXCConfigFileName = "xcode-app.xcconfig"
+
+	// XcodeToolchainBundleID doubles as the TOOLCHAINS xcconfig value.
+	XcodeToolchainBundleID = "io.bitrise.cas.xctoolchain"
+
+	xcodeToolchainSubdir = "toolchain"
+
+	// XcodeToolchainsLinkDirRelative is the per-user dir Xcode scans for toolchain bundles.
+	XcodeToolchainsLinkDirRelative = "Library/Developer/Toolchains"
+
+	// XcodeSelectLinkPath is the active-Xcode anchor symlink `xcode-select -s` maintains.
+	XcodeSelectLinkPath = "/var/db/xcode_select_link"
+
+	// AppleCASPluginRelative is the stock CAS plugin's position inside a developer dir.
+	AppleCASPluginRelative = "usr/lib/libToolchainCASPlugin.dylib"
+
+	// XcodeAppSiblingXCConfigFileName is the xcconfig `xcode link` writes next to a
+	// .xcodeproj when a build configuration has no baseConfigurationReference.
+	XcodeAppSiblingXCConfigFileName = ".bitrise-build-cache.xcconfig"
+
 	// BitriseBuildCacheDirRelative is the repo-local config dir committed alongside the source
 	// tree, holding files such as the persisted xcode-{build,test}.json invocation specs.
 	BitriseBuildCacheDirRelative = ".bitrise-build-cache"
@@ -49,6 +71,10 @@ const (
 	// xcelerateEnrichmentSubdir holds every persisted-state artefact the
 	// enrichment watcher and retry queue share.
 	xcelerateEnrichmentSubdir = "enrichment"
+
+	// xcelerateSessionsSubdir holds per-connection sidecar JSON files the
+	// proxy writes on close, consumed by the enrichment side.
+	xcelerateSessionsSubdir = "sessions"
 
 	// handledManifestsFilename is the NDJSON append-only log of xcactivitylog UUIDs
 	// the Watcher has already emitted, so a proxy restart doesn't replay historic manifests.
@@ -74,6 +100,9 @@ const (
 	// xcelerateBinSubdir holds the xcelerate wrapper scripts (xcodebuild / xcrun) and CLI copy.
 	xcelerateBinSubdir = "bin"
 
+	// xcelerateToolchainSubdir holds the per-user trampoline cache under XcelerateRoot.
+	xcelerateToolchainSubdir = "toolchain"
+
 	// xcelerateConfigFile is the JSON config file written by `activate xcode`.
 	xcelerateConfigFile = "config.json"
 
@@ -96,15 +125,46 @@ const (
 	// XcodeManagedDerivedDataManifestGlobRelative is the HOME-relative glob matching
 	// LogStoreManifest.plist under every wrapper-owned DerivedData workspace-sha.
 	XcodeManagedDerivedDataManifestGlobRelative = BitriseRootRelative + "/" + bitriseCacheSubdir + "/" + xcodeManagedDerivedDataTool + "/*/Logs/*/LogStoreManifest.plist"
+
+	// XcodeBuildRequestHashGlobRelative is the DD-interior glob matching the
+	// per-build-request `<32-hex>.xcbuilddata` dirs Xcode writes under a
+	// DerivedData workspace root. Each ⌘B creates a new entry whose basename
+	// (minus suffix) is the build-request hash; the proxy watches these so it
+	// can reseat the derived InvocationID per IDE ⌘B.
+	XcodeBuildRequestHashGlobRelative = "Build/Intermediates.noindex/XCBuildData/*.xcbuilddata"
+
+	// XcodeIndexBuildRequestHashGlobRelative is the index-store sibling of
+	// XcodeBuildRequestHashGlobRelative; the live-index build Xcode runs as the
+	// user types writes its own XCBuildData dirs under Index.noindex. Watched
+	// alongside the build glob so an index-only rebuild still mints a fresh
+	// InvocationID.
+	XcodeIndexBuildRequestHashGlobRelative = "Index.noindex/Build/Intermediates.noindex/XCBuildData/*.xcbuilddata"
 )
+
+// The Trampoline* constants below are referenced by the trampoline package via
+// string literal — keeps the trampoline binary free of internal/paths imports.
+
+// TrampolineRealpathCachePrefix prefixes xcrun fallback cache files written
+// by the trampoline.
+const TrampolineRealpathCachePrefix = "bitrise-tc-realpath-"
+
+// TrampolineStartLockFilename names the exclusive flock the trampoline grabs
+// before firing an autostart.
+const TrampolineStartLockFilename = "bitrise-xcelerate-starting.lock"
+
+// TrampolineRemarkSentinelPrefix prefixes per-proxy-session sentinel files the
+// trampoline atomically creates to dedup the engagement remark across shim
+// processes.
+const TrampolineRemarkSentinelPrefix = "bitrise-xcelerate-remark-"
+
+// TrampolineVisitURLSentinelPrefix prefixes per-InvocationID sentinel files
+// the trampoline atomically creates to dedup the Visit URL remark across shim
+// processes. Keyed by the derived InvocationID so each distinct xcodebuild /
+// Xcode / SWBBuildService anchor gets exactly one URL printed.
+const TrampolineVisitURLSentinelPrefix = "bitrise-xcelerate-visit-"
 
 // CLIBinaryName is the on-disk name of the CLI executable.
 const CLIBinaryName = "bitrise-build-cache"
-
-// XcelerateCLIBinaryName is hardcoded by the xcodebuild / xcrun wrapper scripts;
-// kept distinct from CLIBinaryName so installer.sh and the xcelerate copy don't
-// collide on PATH.
-const XcelerateCLIBinaryName = "bitrise-build-cache-cli"
 
 // Paths resolves on-disk locations rooted at a single home directory.
 type Paths struct {
@@ -229,6 +289,27 @@ func (p Paths) XcelerateBinFile(name string) string {
 	return filepath.Join(p.XcelerateBinDir(), name)
 }
 
+// TrampolineBinary returns the cached universal trampoline path for a CLI
+// version under ~/.bitrise-xcelerate/toolchain/.
+func (p Paths) TrampolineBinary(cliVersion string) string {
+	return filepath.Join(p.XcelerateRoot(), xcelerateToolchainSubdir, "trampoline-"+cliVersion+"-universal")
+}
+
+// XcodeAppOverrideXCConfigFile returns ~/.bitrise-xcelerate/xcode-app.xcconfig.
+func (p Paths) XcodeAppOverrideXCConfigFile() string {
+	return filepath.Join(p.XcelerateRoot(), XcodeAppOverrideXCConfigFileName)
+}
+
+// XcodeToolchainBundleDir is the install path (~/.bitrise-xcelerate/toolchain/<id>).
+func (p Paths) XcodeToolchainBundleDir() string {
+	return filepath.Join(p.XcelerateRoot(), xcodeToolchainSubdir, XcodeToolchainBundleID)
+}
+
+// XcodeToolchainsLinkPath is the discovery symlink (~/Library/Developer/Toolchains/<id>).
+func (p Paths) XcodeToolchainsLinkPath() string {
+	return filepath.Join(p.Home, XcodeToolchainsLinkDirRelative, XcodeToolchainBundleID)
+}
+
 // ProxySocketPath returns the xcelerate proxy unix-socket path under the supplied temp dir.
 func (p Paths) ProxySocketPath(tempDir string) string {
 	return filepath.Join(tempDir, ProxySocketName)
@@ -252,6 +333,12 @@ func (p Paths) XcelerateLogDir() string {
 // XcelerateEnrichmentDir returns ~/.local/state/xcelerate/enrichment.
 func (p Paths) XcelerateEnrichmentDir() string {
 	return filepath.Join(p.XcelerateStateDir(), xcelerateEnrichmentSubdir)
+}
+
+// XcelerateSessionsDir returns ~/.local/state/xcelerate/sessions, where the
+// proxy drops per-connection sidecar JSON files on close.
+func (p Paths) XcelerateSessionsDir() string {
+	return filepath.Join(p.XcelerateStateDir(), xcelerateSessionsSubdir)
 }
 
 // HandledManifestsFile returns the NDJSON log the enrichment Watcher uses to
@@ -295,6 +382,36 @@ func (p Paths) XcodeManagedProjectTempDir(workspaceSHA string) string {
 // RepoLocalConfigPath returns <repoRoot>/.bitrise-build-cache/<filename>. Repo-rooted, not $HOME-rooted.
 func RepoLocalConfigPath(repoRoot, filename string) string {
 	return filepath.Join(repoRoot, BitriseBuildCacheDirRelative, filename)
+}
+
+// DerivedDataFromManifestPath climbs 3 levels from
+// <DD>/Logs/<Build|Test|...>/LogStoreManifest.plist and returns the DD root.
+// Returns "" when the input shape doesn't match — callers treat empty as
+// "don't filter on DerivedData for this manifest".
+func DerivedDataFromManifestPath(manifestPath string) string {
+	if manifestPath == "" {
+		return ""
+	}
+
+	logsDir := filepath.Dir(filepath.Dir(manifestPath))
+	if filepath.Base(logsDir) != "Logs" {
+		return ""
+	}
+
+	return filepath.Dir(logsDir)
+}
+
+// XcodeSelectLinkCASPluginPath returns the CAS plugin dylib rooted at the
+// xcode-select active-Xcode anchor. Independent of $HOME, so it is package-level
+// rather than a Paths method.
+func XcodeSelectLinkCASPluginPath() string {
+	return filepath.Join(XcodeSelectLinkPath, AppleCASPluginRelative)
+}
+
+// XcodeSelectLinkDefaultToolchainPath returns the default toolchain rooted at
+// the xcode-select anchor so symlinks and references follow `xcode-select -s`.
+func XcodeSelectLinkDefaultToolchainPath() string {
+	return filepath.Join(XcodeSelectLinkPath, "Toolchains", "XcodeDefault.xctoolchain")
 }
 
 // DirMaker is the subset of utils.OsProxy that EnsureDir needs.
